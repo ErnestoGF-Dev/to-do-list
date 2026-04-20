@@ -1,6 +1,6 @@
-import db from '../config/db';
-import { User, Task, TaskUpdate } from '../models/todolist';
-import AppError from '../utils/appError';
+import db from '../config/db.js';
+import { User, Task, TaskUpdate } from '../models/todolist.js';
+import AppError from '../utils/appError.js';
 
 export
     /**
@@ -16,6 +16,25 @@ export
         throw new Error('Error al guardar el usuario: ' + error.message);
     }
 }
+
+export
+    /**
+     * Funcion para validar la exitencia de usuario
+     * @param {string} email - Email del usuario a validar
+     * @returns {Promise<Object>} Objeto del usuario si existe, error si no existe
+     */
+    async function getUserAndValidate(email) {
+    try {
+        const result = await db.query('SELECT id, email FROM users WHERE email = $1', [email]);
+        if (result.rows.length === 0) {
+             throw new AppError('NotFoundError', 404);
+        }
+        return result.rows[0];
+    } catch (error) {
+         throw new AppError('NotFoundError', 404);
+    }
+};
+
 export
     /**
      * Obtiene todas las tareas de un usuario mediente su correo, para controlar que cada usuario solo vea sus tareas
@@ -25,15 +44,15 @@ export
      */
     async function getAllTasks(email) {
     try {
-        const result = await db.query('SELECT title, description, status FROM tasks WHERE user_id = (SELECT id FROM users WHERE email = $1) ORDER BY id ASC', [email]);
+        const result = await db.query('SELECT id,title, description, status FROM tasks WHERE user_id = (SELECT id FROM users WHERE email = $1) ORDER BY id ASC', [email]);
 
         if (result.rows.length === 0) {
-            throw new AppError('No se encontraron tareas para el usuario con email: ' + email, 404);
+            throw new AppError('NotFoundError', 404);
         }
 
         return result.rows;
     } catch (error) {
-        throw new Error('Error al obtener las tareas: ' + error.message);
+        throw new AppError('NotFoundError', 404);
     }
 }
 export

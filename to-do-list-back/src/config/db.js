@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-require('dotenv').config();
+import 'dotenv/config';
 
 class NewClient {
     constructor() {
