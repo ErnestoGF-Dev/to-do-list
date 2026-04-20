@@ -79,18 +79,15 @@ export class ToDoList {
   }
 
   prepareEdit(task: any, titleInput: HTMLInputElement, descInput: HTMLInputElement, statusInput: HTMLSelectElement) {
-    // 1. Mandamos el ID a los Query Params
     this.router.navigate([], {
       queryParams: { id: task.id },
       queryParamsHandling: 'merge'
     });
 
-    // 2. Llenamos los inputs con los datos de la tarea
     titleInput.value = task.title;
     descInput.value = task.description;
     statusInput.value = task.status;
 
-    // 3. Activamos modo edición
     this.isEditing.set(true);
     this.selectedTaskId.set(task.id);
   }
@@ -108,10 +105,9 @@ loadTasks() {
     next: (tasks) => {
       const dataArray = Array.isArray(tasks) ? tasks : [];
       this.tasks.set(dataArray);
-      this.errorMessage.set(null); // Limpiamos errores previos si la carga es exitosa
+      this.errorMessage.set(null); 
     },
     error: (err) => {
-      // Aquí capturamos el 404 del middleware de Node
       if (err.status === 404) {
         this.tasks.set([]); 
       } else {
