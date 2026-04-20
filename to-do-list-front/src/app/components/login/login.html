@@ -1,0 +1,65 @@
+<div class="fixed inset-0 bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-4 z-50">
+  
+  <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md border border-white/20 transform transition-all">
+    
+    @if (errorMessage()) {
+      <div class="mb-6 flex items-center gap-3 bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl text-sm font-semibold animate-in fade-in slide-in-from-top-2 duration-300">
+        <span class="text-lg">⚠️</span>
+        <span class="flex-1">{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <div class="text-center mb-8">
+      <div class="bg-blue-50 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 rotate-3 shadow-inner">
+        <span class="text-3xl">
+          @if (isModeRegister()) { ✨ } @else { 🔑 }
+        </span>
+      </div>
+      
+      <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+        {{ isModeRegister() ? 'Crea tu cuenta' : '¡Hola de nuevo!' }}
+      </h2>
+      <p class="text-slate-500 mt-2 text-sm">
+        {{ isModeRegister() ? 'Empieza a organizar tu día ahora mismo.' : 'Ingresa tu correo para ver tus pendientes.' }}
+      </p>
+    </div>
+
+    <form (submit)="handleSubmit($event)" class="space-y-5">
+      <div class="relative">
+        <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Tu Correo Electrónico</label>
+        <input 
+          type="email" 
+          name="email"
+          required
+          placeholder="ejemplo@correo.com"
+          class="w-full mt-1 px-5 py-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all text-slate-700 placeholder:text-slate-300"
+          #emailInput
+        >
+      </div>
+
+      <button 
+        type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 shadow-xl shadow-blue-100 flex items-center justify-center gap-2"
+      >
+        {{ isModeRegister() ? 'Registrarme gratis' : 'Entrar a mi cuenta' }}
+        <span>🚀</span>
+      </button>
+    </form>
+
+    <div class="relative my-8">
+      <div class="absolute inset-0 flex items-center">
+        <span class="w-full border-t border-slate-100"></span>
+      </div>
+      <div class="relative flex justify-center text-[10px] uppercase tracking-widest font-bold">
+        <span class="bg-white px-4 text-slate-300">O también</span>
+      </div>
+    </div>
+
+    <button 
+      (click)="toggleMode()"
+      class="w-full py-3 text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors"
+    >
+      {{ isModeRegister() ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate aquí' }}
+    </button>
+  </div>
+</div>
